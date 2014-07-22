@@ -2,17 +2,22 @@
 
 import os
 import os.path
-from zipfile import ZipFile, ZIP_LZMA
+from zipfile import ZipFile, ZIP_DEFLATED
 
-addon_dir = os.path.dirname(os.path.realpath(__file__))
-print(addon_dir)
+script_file = os.path.realpath(__file__)
+script_dir = os.path.dirname(script_file)
+addon_dir = os.path.join(script_dir, 'addon')
+
 files = []
 for walk in os.walk(addon_dir):
     dir = os.path.relpath(walk[0], addon_dir)
-    files += [os.path.join(dir, f) for f in walk[2] if f != __file__]
+    for file in walk[2]:
+        real_file = os.path.join(os.path.realpath(walk[0]), file)
+        arc_file = os.path.join(dir, file)
+        if not os.path.samefile(real_file, script_file):
+            files.append((real_file, arc_file))
 
-addon_file = os.path.join(addon_dir, '{}.teaa'.format(os.path.basename(addon_dir)))
-print(addon_file)
-with ZipFile(addon_file, 'w', ZIP_LZMA) as addon:
+addon_file = os.path.join(script_dir, '{}.teaa'.format(os.path.basename(script_dir)))
+with ZipFile(addon_file, 'w', ZIP_DEFLATED) as addon:
     for file in files:
-        addon.write(file)
+        addon.write(file[0], file[1])

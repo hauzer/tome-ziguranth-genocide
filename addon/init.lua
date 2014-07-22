@@ -20,11 +20,11 @@
 for_module = 'tome'
 long_name = 'Ziguranth Genocide'
 short_name = 'ziguranth-genocide'
-version = {1, 2, 3}
+version = {1,2,3}
 weight = 100
 
 author = {'hauzer', 'hauzer@gmx.com'}
-homepage = ''
+homepage = 'https://bitbucket.org/hauzer/tome-ziguranth-genocide'
 description = [[Reduces the number of Ziguranth patrols after destroying Zigur with the Grand Corruptor.]]
            .. [[The overall density of units on the map won't change, as adventurer parties will become more frequent.]]
 tags = {'zigur', 'ziguranth', 'patrols', 'genocide', 'grand corruptor'}
