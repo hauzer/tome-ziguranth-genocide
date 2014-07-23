@@ -16,4 +16,4 @@ Reduces the maximum number of Ziguranth patrols from five (5) to one (1) after M
 
 -----
 
-[`addon <http://te4.org/games/addons/tome/ziguranth-genocide>`_ | `forum topic <http://forums.te4.org/viewtopic.php?f=50&t=41983&page=1>`_]
+`addon <http://te4.org/games/addons/tome/ziguranth-genocide>`_ | `forum topic <http://forums.te4.org/viewtopic.php?f=50&t=41983&page=1>`_
