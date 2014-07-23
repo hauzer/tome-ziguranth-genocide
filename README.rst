@@ -3,9 +3,9 @@ This is an addon for the tactical roguelike RPG, `Tales of Maj'Eyal <http://te4.
 Description
 -----------
 
-After Protector Myssil died, some say by the daggers of a shadowy backstabber,
-while others bespoke of a crazed mage drawing fiendish black magicks,
-the fanatic Ziguranth order crumbled into chaos and their numbers dwindled
+After Protector Myssil died (some say by the daggers of a shadowy backstabber,
+while others bespoke of a crazed mage drawing fiendish black magicks),
+the fanatic Ziguranth order crumbled into chaos, and its numbers dwindled
 into insignificance.
 
 
