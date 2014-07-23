@@ -1,4 +1,4 @@
--- Ziguranth Genocide - ToME addon
+﻿-- Ziguranth Genocide - ToME addon
 -- Copyright (C) 2014 Никола "hauzer" Вукосављевић
 --
 -- This program is free software: you can redistribute it and/or modify
@@ -14,20 +14,24 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-for_module = 'tome'
-long_name = 'Ziguranth Genocide'
-short_name = 'ziguranth-genocide'
-version = {1,2,3}
-weight = 100
+local _M = loadPrevious(...)
 
-author = {'hauzer', 'hauzer@gmx.com'}
-homepage = 'http://forums.te4.org/viewtopic.php?f=50&t=41983&page=1'
-description = [[After Protector Myssil died, some say by the daggers of a shadowy backstabber, ]]
-           .. [[while others bespoke of a crazed mage drawing fiendish black magicks, the fanatic ]]
-           .. [[Ziguranth order crumbled into chaos and their numbers dwindled into insignificance.]]
-tags = {'zigur', 'ziguranth', 'patrols', 'genocide', 'grand corruptor'}
+local _addedToLevel = _M.addedToLevel
+function _M:addedToLevel(level, x, y)
+    _addedToLevel(self, level, x, y)
+    
+    if self.name == 'ziguranth patrol' then
+        game.state.zigur_patrols = game.state.zigur_patrols + 1
+    end
+end
 
-superload = true
-hooks = true
-data = false
-overload = false
+local _die = _M.die
+function _M:die(src, death_note)
+    _die(self, src, death_note)
+    
+    if self.name == 'ziguranth patrol' then
+        game.state.zigur_patrols = game.state.zigur_patrols - 1
+    end
+end
+
+return _M
