@@ -1,36 +1,48 @@
--- Ziguranth Genocide - ToME addon
--- Copyright (C) 2014 Никола "hauzer" Вукосављевић
---
--- This program is free software: you can redistribute it and/or modify
--- it under the terms of the GNU General Public License as published by
--- the Free Software Foundation, either version 3 of the License, or
--- (at your option) any later version.
---
--- This program is distributed in the hope that it will be useful,
--- but WITHOUT ANY WARRANTY; without even the implied warranty of
--- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
--- GNU General Public License for more details.
---
--- You should have received a copy of the GNU General Public License
--- along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-class:bindHook('Entity:loadList', function(self, data)
-    if data.file == '/data/zones/town-zigur/npcs.lua' then
-        local on_die = data.res.PROTECTOR_MYSSIL.on_die
-        data.res.PROTECTOR_MYSSIL.on_die = function(self)
-            require('engine.ui.Dialog'):simplePopup('Zigur, gone', [[Protector Myssil lies slain. You have dealt a heavy blow to the Ziguranth order, ]]
-                                                                .. [[and their ranks will surely fall into confusion.]])
-            game.state.max_zigur_patrols = 1
-            
-            on_die(self)
+class:bindHook('Entity:loadList', function(self, list)
+    if list.file == '/data/zones/town-zigur/npcs.lua' then
+        if not game.addons then
+            game.addons = {}
         end
-    end
-end)
 
-class:bindHook('Actor:move', function(self, data)
-    if self.name == 'ziguranth patrol' then
-        if game.state.zigur_patrols > game.state.max_zigur_patrols then
-            self:die(nil, nil)
+        if not game.addons.ziguranth_genocide then
+            game.addons.ziguranth_genocide = {}
+        end
+
+        game.addons.ziguranth_genocide.base_myssil_on_die = list.res.PROTECTOR_MYSSIL.on_die
+        list.res.PROTECTOR_MYSSIL.on_die = function(self)
+            require('engine.ui.Dialog'):simplePopup(
+                'Zigur, decimated',
+
+                [[Protector Myssil lies slain. ]] ..
+                [[You have dealt a fatal blow to the Ziguranth order, ]] ..
+                [[and their numbers will surely dwindle into insignificance.]]
+            )
+
+            game.addons.ziguranth_genocide.base_player_onEnterLevel = game.player.onEnterLevel
+            game.player.onEnterLevel = function(self, zone, level)
+                if zone.name == 'World of Eyal' then
+                    self.onEnterLevel = base_onEnterLevel
+
+                    -- Remove all existing Ziguranth patrols
+                    for _, npc in pairs(level.entities) do
+                        if npc.name == 'ziguranth patrol' then
+                            npc:die()
+                        end
+                    end
+
+                    -- Remove Ziguranth patrols from the spawn list
+                    for id, npc in pairs(level.perm_entities_list['maj_eyal_encounters_npcs']) do
+                        if npc.name == 'ziguranth patrol' then
+                            table.remove(level.perm_entities_list['maj_eyal_encounters_npcs'], id)
+                            break
+                        end
+                    end
+                end
+
+                return game.addons.ziguranth_genocide.base_player_onEnterLevel(self, zone, level)
+            end
+
+            return game.addons.ziguranth_genocide.base_myssil_on_die(self)
         end
     end
 end)
