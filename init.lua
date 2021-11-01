@@ -2,7 +2,7 @@ for_module = 'tome'
 long_name = 'Ziguranth Genocide'
 short_name = 'ziguranth-genocide'
 version = {1,7,4}
-addon_version = {2,0,0}
+addon_version = {2,1,0}
 weight = 100
 
 author = {'hauzer', 'hauzer.nv@gmail.com'}
@@ -13,6 +13,6 @@ description = [[After Protector Myssil died, some say by the daggers of a shadow
 tags = {'zigur', 'ziguranth', 'patrols', 'genocide', 'myssil', 'grand corruptor'}
 
 overload = false
-superload = false
+superload = true
 data = false
-hooks = true
+hooks = false
